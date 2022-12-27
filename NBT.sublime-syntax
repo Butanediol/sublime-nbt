@@ -1,0 +1,88 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/syntax.html
+file_extensions:
+  - snbt
+scope: source.snbt
+contexts:
+  main:    
+    # Data types
+
+    ## Byte
+    ## SNBT Example: 34B, -20b
+    - match: '\b([1-9]|[1-9][0-9]|1[01][0-9]|12[0-7])(b|B)\b|-([1-9]|[1-9][0-9]|1[01][0-9]|12[0-8])(B|b)\b'
+      scope: constant.numeric.integer
+
+    ## Boolean
+    ## SNBT Example: true
+    - match: '\b(true|false)\b'
+      scope: constant.language
+
+    ## Short
+    ## SNBT Example: 31415s, -27183s
+    - match: '\b\d+(s|S)\b'
+      scope: constant.numeric.integer
+
+    ## Float
+    ## SNBT Example: 3.1415926f
+    - match: '(\b|-|+)[0-9]+(.[0-9]+)?(f|F)\b'
+      scope: constant.numeric.integer
+
+    ## Double
+    ## SNBT Example: 3.1415926
+    - match: '(\b|-|+)[0-9]+(.[0-9]+)?(d|D)?\b'
+      scope: constant.numeric.integer
+
+    ## Int
+    ## SNBT Example: 31415926
+    - match: '\b\d+\b'
+      scope: constant.numeric.integer
+
+    ## Long
+    ## SNBT Example: "Call me 'Ishmael'"
+    - match: '\b\d+(l|L)\b'
+      scope: constant.numeric.integer
+
+    ## List
+    ## SNBT Example: [3.2,64.5,129.5]
+    - match: '\['
+      scope: punctuation.section.brackets.begin
+      push: brackets
+
+    ## Compound
+    ## SNBT Example: {X:3,Y:64,Z:129}
+    - match: '{'
+      scope: punctuation.section.braces.begin
+      push: braces
+
+    ## String
+    ## SNBT Example: 31415926l
+    - match: '"'
+      scope: string.quoted.double
+      push: quotes
+
+    - match: '(\w+)'
+      scope: entity.name
+
+
+
+  braces:
+    - match: '}'
+      scope: punctuation.section.braces.end
+      pop: true
+    - include: main
+
+  brackets:
+    - match: ']'
+      scope: punctuation.section.brackets.end
+      pop: true
+    - include: main
+
+  quotes:
+    - match: '"'
+      scope: string.quoted.double
+      pop: true
+    - match: '\\"'
+      scope: constant.character.escape
+    - match: .
+      scope: string.quoted.other
